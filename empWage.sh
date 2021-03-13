@@ -9,6 +9,24 @@ MAX_WORKING_HOURS=90
 
 totalWorkingHours=0
 totalWorkingDays=0
+
+function getWorkingHours() {
+	local empCheck=$1
+	local empHrs=0
+	case $empCheck in
+         $IS_PRESENT_FULL_TIME)
+          empHrs=8 ;;
+
+         $IS_PRESENT_PART_TIME)
+          empHrs=4 ;;
+
+         *)
+          empHrs=0 ;;
+
+   esac
+
+	echo $empHrs
+}
 	
 while [ $totalWorkingDays -lt $MAX_WORKING_DAYS ] && [ $totalWorkingHours -lt $MAX_WORKING_HOURS ]
 do
@@ -16,17 +34,7 @@ do
 	empCheck=$(( RANDOM % 3 ))
 	(( totalWorkingDays++ ))
 	
-		case $empCheck in
-			$IS_PRESENT_FULL_TIME)
-			 empHrs=8 ;; 
-
-			$IS_PRESENT_PART_TIME)
-			 empHrs=4 ;;
-		
-			*)
-			 empHrs=0 ;;
-
-	esac
+	empHrs="$( getWorkingHours $empCheck )"
 		
 	totalWorkingHours=$(( $totalWorkingHours + $empHrs ))
 
